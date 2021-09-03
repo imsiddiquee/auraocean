@@ -1,0 +1,26 @@
+<aura:component
+  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+>
+  <aura:attribute name="examObj" type="contact" default="{}" />
+
+  <div class="slds-box slds-p-around_x-small" style="background-color: white">
+    <lightning:input
+      name="firstName"
+      label="First Name"
+      value="{!v.examObj.FirstName}"
+    />
+    <lightning:input
+      name="LastName"
+      label="Last Name"
+      value="{!v.examObj.LastName}"
+    />
+    <lightning:button
+      class="slds-m-top_x-small"
+      variant="brand"
+      label="Click"
+      title="Brand action"
+      onclick="{! c.handleClick }"
+    />
+  </div>
+</aura:component>

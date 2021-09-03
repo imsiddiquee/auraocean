@@ -1,0 +1,70 @@
+Org::report_pg
+imsiddiquee@cunning-goat-hwvix2.com
+tigerhunter3
+
+How to use CSS/style with component
+    component   
+        <p class="paragraph"> Hello world</p>
+    component-style
+        .THIS.paragraph{text-shadow: 3x 2x red; color: green; font-style: bold;}
+
+    component   
+        <div>
+            <p class="paragraph"> Hello world</p>
+        </div>
+    component-style==> need to put space for one lavel deep div
+        .THIS .paragraph{text-shadow: 3x 2x red; color: green; font-style: bold;}
+
+lightning application
+    <aura:application extends="force:slds">
+        <c:CarSearchForm/>
+    </aura:application>
+
+attribute
+    {!v.attributeName}  ==> it will be updated.
+    {#v.attributeName}  ==> it's always fixed.
+attribute used in component
+    declare
+        <aura:attribute name="buttonLabel" type="String" default="Search" />
+        <aura:attribute name="examObj" type="contact" default="{}"/>
+    apply ==> button label
+        <lightning:button class="slds-m-top_x-small" label="{!v.buttonLabel}" variant="brand"  title="Brand action" onclick="{! c.handleClick }" />
+
+
+if condition in component
+    
+        <aura:if isTrue="{!v.truthy}">
+                True
+            <aura:set attribute="else">
+                False
+            </aura:set>
+        </aura:if> 
+
+    Implement in component
+
+                <aura:if isTrue="{!v.isNewAvailable}">
+                        <lightning:button label="{!v.buttonLabel}" title="Neutral" />
+                    <aura:set attribute="else">
+                        No button to display
+                    </aura:set>
+                </aura:if> 
+
+looping through arrays and objects
+    <aura:iteration items="1,2,3,4,5" var="item">
+        <meta value="{!item}" />
+    </aura:iteration>
+
+    implement in component
+            <lightning:select name="selectItem" aura:id="carType" label="All Types" variant="label-hidden" value="">
+
+                <option value="" text="All Type"/>
+                <option value="1" text="Sorts Car"/> 
+                <option value="2" text="Luxury Car"/>
+
+                <aura:iteration items="{!v.carTypes}" var="carType">
+                    <option value="{!carType}" text="{!carType}"/>                            
+                </aura:iteration>               
+
+            </lightning:select>
+
+    
