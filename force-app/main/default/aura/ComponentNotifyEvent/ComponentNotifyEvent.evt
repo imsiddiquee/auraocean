@@ -1,0 +1,4 @@
+<!--ComponentNotifyEvent.evt-->
+<aura:event type="COMPONENT" description="Sample Component Event">
+    <aura:attribute name="message" type="String" default="Hello World!!" />
+</aura:event>

@@ -1,0 +1,83 @@
+<aura:component
+  controller="ContactHandler"
+  implements="flexipage:availableForAllPageTypes"
+  access="global"
+>
+  <!--attribute-->
+  <aura:attribute name="contactObj" type="Contact" default="{}" />
+
+  <!--register event-->
+  <aura:registerEvent
+    name="componentNotifyEvent"
+    type="c:ComponentNotifyEvent"
+  />
+
+  <lightning:card title="Contact Information">
+    <lightning:layout multipleRows="true">
+      <lightning:layoutItem padding="around-small" size="12">
+        <lightning:layout>
+          <lightning:layoutItem padding="around-small" size="6">
+            <lightning:input
+              name="FirstName"
+              label="First Name"
+              value="{!v.contactObj.FirstName}"
+            />
+          </lightning:layoutItem>
+
+          <lightning:layoutItem padding="around-small" size="6">
+            <lightning:input
+              name="LastName"
+              label="Last Name"
+              value="{!v.contactObj.LastName}"
+            />
+          </lightning:layoutItem>
+        </lightning:layout>
+      </lightning:layoutItem>
+
+      <lightning:layoutItem padding="around-small" size="12">
+        <lightning:layout>
+          <lightning:layoutItem padding="around-small" size="6">
+            <lightning:input
+              name="Email"
+              label="Email"
+              value="{!v.contactObj.Email}"
+            />
+          </lightning:layoutItem>
+
+          <lightning:layoutItem padding="around-small" size="6">
+            <lightning:input
+              name="Phone "
+              label="Phone "
+              value="{!v.contactObj.Phone }"
+            />
+          </lightning:layoutItem>
+        </lightning:layout>
+      </lightning:layoutItem>
+
+      <lightning:layoutItem padding="around-small" size="12">
+        <lightning:layout horizontalAlign="center">
+          <lightning:button
+            class="slds-m-top_x-small"
+            variant="brand"
+            label="Save"
+            title="Brand action"
+            onclick="{!c.handleSave}"
+          />
+
+          <lightning:button
+            class="slds-m-top_x-small"
+            label="Cancel"
+            title="Neutral action"
+            onclick="{! c.handleCancel }"
+          />
+          <lightning:button
+            class="slds-m-top_x-small"
+            label="Record Detail"
+            title="Brand Outline"
+            onclick="{! c.handleRecordDetail }"
+          />
+        </lightning:layout>
+      </lightning:layoutItem>
+    </lightning:layout>
+  </lightning:card>
+</aura:component>

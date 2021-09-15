@@ -1,0 +1,17 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global">
+  <!-- attribute -->
+  <aura:attribute type="String" name="message" access="public" />
+  <aura:attribute type="String" name="recordError" access="private" />
+
+  <!-- handle application event -->
+  <aura:handler
+    event="c.ApplicationNotifyEvent"
+    action="{!c.handleApplicationEvent}"
+  />
+
+  <lightning:card title="Contact Information">
+    <div>
+      <p>hello {!v.message}</p>
+    </div>
+  </lightning:card>
+</aura:component>

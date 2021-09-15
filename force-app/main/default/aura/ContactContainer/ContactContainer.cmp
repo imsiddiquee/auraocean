@@ -1,0 +1,31 @@
+<!--
+
+  ContactContainer
+      ContactForm
+          ComponentNotifyEvent==>child to parent
+      ContactGridForm
+          aura mothod==>childMessageMethod==>parent to child
+      ContactDetail
+          ApplicationNotifyEvent ==>component to component
+ -->
+
+<aura:component
+  controller="ContactHandler"
+  implements="flexipage:availableForAllPageTypes"
+  access="global"
+>
+  <!--register component event-->
+  <aura:handler
+    name="componentNotifyEvent"
+    event="c:ComponentNotifyEvent"
+    action="{!c.handleComponentEvent}"
+  />
+
+  <c:ContactForm aura:id="cmpContactForm" />
+  <lightning:button
+    variant="brand"
+    label="Refresh Grid"
+    onclick="{!c.callAuraMethod}"
+  />
+  <c:ContactGridForm aura:id="cmpContactGridForm" />
+</aura:component>
