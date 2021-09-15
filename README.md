@@ -4,6 +4,8 @@ AURA environment has Component-event, Application-event, Aura-method this app he
 
 ## Simple Account Information App
 
+User gives input on the AccountForm component. The grid component display all saved accounts information. Grid button( View Detail), helps to show selected account detail information on component AccountDetailForm.
+
 ![##](https://github.com/imsiddiquee/auraocean/blob/main/postContent/App%20overview.png)
 
 ### Application internal structure
