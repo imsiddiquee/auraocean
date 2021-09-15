@@ -1,0 +1,51 @@
+<aura:component
+  controller="AccountHandler"
+  implements="flexipage:availableForAllPageTypes"
+  access="global"
+>
+  <!--attribute-->
+  <aura:attribute name="accountObj" type="Account" default="{}" />
+
+  <lightning:card title="Account Information">
+    <lightning:layout multipleRows="true">
+      <lightning:layoutItem padding="around-small" size="12">
+        <lightning:layout>
+          <lightning:layoutItem padding="around-small" size="6">
+            <lightning:input
+              name="Name"
+              label="Account Name"
+              value="{!v.accountObj.Name}"
+            />
+          </lightning:layoutItem>
+
+          <lightning:layoutItem padding="around-small" size="6">
+            <lightning:input
+              name="AccountNumber"
+              label="Account Number"
+              value="{!v.accountObj.AccountNumber}"
+            />
+          </lightning:layoutItem>
+        </lightning:layout>
+      </lightning:layoutItem>
+
+      <lightning:layoutItem padding="around-small" size="12">
+        <lightning:layout horizontalAlign="center">
+          <lightning:button
+            class="slds-var-m-top_x-small"
+            variant="brand"
+            label="Save"
+            title="Brand action"
+            onclick="{!c.handleSave}"
+          />
+
+          <lightning:button
+            class="slds-var-m-top_x-small"
+            label="Cancel"
+            title="Neutral action"
+            onclick="{! c.handleCancel }"
+          />
+        </lightning:layout>
+      </lightning:layoutItem>
+    </lightning:layout>
+  </lightning:card>
+</aura:component>
