@@ -2,6 +2,17 @@ Org::report_pg
 imsiddiquee@cunning-goat-hwvix2.com
 tigerhunter3
 
+trailhead orgs
+    https://trailhead.salesforce.com/users/profiles/orgs
+
+component available for all pages support by lightning
+    implements="flexipage:availableForAllPageTypes" access="global"    
+page available for only tabs
+    implements="force:appHostable
+quick action
+    implements="force:lightningQuickAction"
+    implements="force:lightningQuickActionWithoutHeader"
+
 How to use CSS/style with component
     component   
         <p class="paragraph"> Hello world</p>
@@ -15,18 +26,27 @@ How to use CSS/style with component
     component-style==> need to put space for one lavel deep div
         .THIS .paragraph{text-shadow: 3x 2x red; color: green; font-style: bold;}
 
-lightning application
+lightning application 
     <aura:application extends="force:slds">
         <c:CarSearchForm/>
     </aura:application>
 
-attribute
+attribute declare in component
     {!v.attributeName}  ==> it will be updated.
     {#v.attributeName}  ==> it's always fixed.
+component-controller
+    get value from attribute
+        var value=component.get("v.attributeName");
+    set attribute value
+        component.set("v.attributeName",value);
+
 attribute used in component
     declare
         <aura:attribute name="buttonLabel" type="String" default="Search" />
         <aura:attribute name="examObj" type="contact" default="{}"/>
+        <aura:attribute name="car" type="Car__c" access="public" default="{'sObjectType':'Car__c','Name':'Shamim', 'Picture__c':''}"   /> 
+        <aura:attribute name="cars" type="Car__c[]" access="public" /> 
+        <aura:attribute name="car" type="Object" access="public" default="{'sObjectType':'Contact','LastName':'one','FirstName':'test'}"   /> 
     apply ==> button label
         <lightning:button class="slds-m-top_x-small" label="{!v.buttonLabel}" variant="brand"  title="Brand action" onclick="{! c.handleClick }" />
 
@@ -40,31 +60,405 @@ if condition in component
             </aura:set>
         </aura:if> 
 
-    Implement in component
+                Implement if on the component
 
-                <aura:if isTrue="{!v.isNewAvailable}">
-                        <lightning:button label="{!v.buttonLabel}" title="Neutral" />
-                    <aura:set attribute="else">
-                        No button to display
-                    </aura:set>
-                </aura:if> 
+                                            <aura:if isTrue="{!v.isNewAvailable}">
+                                                    <lightning:button label="{!v.buttonLabel}" title="Neutral" />
+                                                <aura:set attribute="else">
+                                                    No button to display
+                                                </aura:set>
+                                            </aura:if>
+
 
 looping through arrays and objects
     <aura:iteration items="1,2,3,4,5" var="item">
         <meta value="{!item}" />
     </aura:iteration>
 
-    implement in component
-            <lightning:select name="selectItem" aura:id="carType" label="All Types" variant="label-hidden" value="">
+            implement in component
+                                    <lightning:select name="selectItem" aura:id="carType" label="All Types" variant="label-hidden" value="">
 
-                <option value="" text="All Type"/>
-                <option value="1" text="Sorts Car"/> 
-                <option value="2" text="Luxury Car"/>
+                                        <option value="" text="All Type"/>
+                                        <option value="1" text="Sorts Car"/> 
+                                        <option value="2" text="Luxury Car"/>
 
-                <aura:iteration items="{!v.carTypes}" var="carType">
-                    <option value="{!carType}" text="{!carType}"/>                            
-                </aura:iteration>               
+                                        <aura:iteration items="{!v.carTypes}" var="carType">
+                                            <option value="{!carType}" text="{!carType}"/>                            
+                                        </aura:iteration>               
 
-            </lightning:select>
+                                    </lightning:select>
+
+set value by aura id
+    syntax to use it
+        aura:id="carType"
+    get value by id
+        var value=component.find('id').get('v.value');
+            var carType = component.find("carType").get("v.value");
+    set value by id
+        component.find('id').set('new_value');
+
+array declare in controller
+    ["Sports Car-2", "Luxury Car-2", "Van-2"]
+
+system events==> init, render
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="render" value="{!this}" action="{!c.doRender}" />
+
+
+base component
+    <aura:component abstract="true" extensible="true">
+        {!v.body}
+    </aura:component>
+
+comment 
+    component==> <!--  -->
+
+grid system
+        <lightning:layout  multipleRows="true">
+            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3">                
+            </lightning:layoutItem>
+        </lightning:layout>
+
+hyperlink button ==> redirect to another page==>show hide button==> var navEvt=$A.get("e.force:navigateToSOjbect");
+        component
+                        <aura:attribute type="boolean" name="showLinkButton" access="public" default="false"/>
+
+                        <aure:if isTrue={!v.showLinkButton}>
+                            <lightning:button  class="slds-m-top_x-small" label="Full Detail" title="Neutral action" onclick="{! c.handleFullDetail }"/>
+                        </aure:if>
+
+        controller
+
+                            doInit:function(component,event,handle){
+
+                                var navEvt=$A.get("e.force:navigateToSOjbect");
+                                if(navEvt)
+                                {
+                                    component.set("v.showLinkButton",true);
+                                }
+                                else
+                                {
+                                    component.set("v.showLinkButton",false);             
+                                }
+                            },
+
+                            handleFullDetail:function(component,event,handle){
+                                var navEvt=$A.get("e.force:navigateToSOjbect");
+                                if(navEvt)
+                                {
+                                    //navEvt.setParams({"recordId":component.get("v.car").id,"slideDevName": "related"});
+                                    var navEvt = $A.get("e.force:navigateToSObject");
+                                    navEvt.setParams({
+                                    "recordId": "00QB0000000ybNX",
+                                    "slideDevName": "related"
+                                    });
+                                    
+                                    navEvt.fire();
+                                }
+                                else
+                                {
+                                    component.set("v.showLinkButton",false);             
+                                }
+                            }
+
+
+
+component event==>child to parent,handle by component itself or the parent component. child==>register the event, parent==> implement the event.
+application event==> any component handle this event,like pub-sub. one component envoke the event, another-component ==> implement the event.
+aura event==> parent to child,component to component, child==>declare the event, parent==>implement and envoke the child event.
+
+component event
+    https://www.biswajeetsamal.com/blog/component-events-in-salesforce-lightning-framework/
+    1) Declare a component event.
+    2)child register the event
+    3)parent envoke the event
+
+component event
+                child to parent
+
+                    declare an events==>event name==>SampleComponentEvent
+                                                        <!--SampleComponentEvent.evt-->
+                                                        <aura:event type="COMPONENT" description="Sample Component Event">
+                                                            <aura:attribute name="message" type="String" default="Hello World!!" />
+                                                        </aura:event>
+
+                    child ChildForm.cmp
+                                                    <!--Child.cmp-->
+                                                    <aura:component >
+                                                        <aura:registerEvent name="sampleCmpEvent" type="c:SampleComponentEvent" />
+                                                        <lightning:button label="Click to fire the event" variant="brand" onclick="{!c.childComponentEvent}"/>
+                                                    </aura:component>
+
+                    child ChildFormController.js
+                                                    childComponentEvent : function(cmp, event,helper) { 
+                                                            //Get the event using registerEvent name. 
+                                                            var cmpEvent = cmp.getEvent("sampleCmpEvent"); 
+                                                            //Set event attribute value
+                                                            cmpEvent.setParams({"message" : "Welcome "}); 
+                                                            cmpEvent.fire(); 
+                                                        }
+                        
+
+                    parent Parent.cmp
+                                                    <!--Parent.cmp-->
+                                                    <aura:component >
+                                                        <aura:attribute name="eventMessage" type="String"/> 
+                                                        <aura:handler name="sampleCmpEvent" event="c:SampleComponentEvent" action="{!c.parentComponentEvent}"/>
+                                                        <div class="slds-m-around_xx-large">
+                                                            <c:Child /> 
+                                                            <p>{!v.eventMessage}</p> 
+                                                        </div>
+                                                    </aura:component>
+                        
+                    parent ParentController.js
+
+                                                    parentComponentEvent : function(cmp, event) { 
+                                                        //Get the event message attribute
+                                                        var message = event.getParam("message"); 
+                                                        //Set the handler attributes based on event data 
+                                                        cmp.set("v.eventMessage", message + 'Biswajeet');         
+                                                    } 
+
+aura event
+https://www.sfdcpoint.com/salesforce/aura-method-in-lightning-salesforce/
+1)child declare the event.
+2)parent implement the aura-event.
+
+aura event
+            parent to child
+
+                            child component
+                                            <!--Child.cmp-->
+                                            <aura:component>
+                                                <aura:method name="childMessageMethod" action="{!c.getMessage}" access="public">
+                                                    <aura:attribute name="childGreetingParam" type="String" default="Hello"/> 
+                                                    <aura:attribute name="childPersonNameParam" type="String" default="World"/> 
+                                                </aura:method>
+                                            </aura:component>
+
+                                                        child controller
+
+                                                        getMessage : function(component, event) {
+                                                            //get method paramaters
+                                                            var params = event.getParam('arguments');
+                                                            if (params) {
+                                                                var param1 = params.childGreetingParam;
+                                                                var param2 = params.childPersonNameParam;
+                                                                alert(param1 + " " + param2);
+                                                            }
+                                                        }
+
+                            Parent component
+
+                                            <!--Parent cmp-->
+                                            <aura:component>  
+                                                <div class="slds-m-around_xx-large">
+                                                    <!-- Add Child Component -->
+                                                    <c:ChildComponent aura:id="childCmp"/>
+                                                    <!-- On button click child aura:method will be called-->
+                                                    <lightning:button variant="brand" label="Call Child" onclick="{!c.callAuraMethod}" />
+                                                </div>
+                                            </aura:component>
+
+                                                            parent controller
+
+                                                            callAuraMethod : function(component, event, helper) {
+                                                                //Call Child aura method
+                                                                var childComponent = component.find("childCmp");
+                                                                var message = childComponent.childMessageMethod();
+                                                            }
+
+
 
     
+        
+application event steps==> it's work on pub-sub model
+https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/events_application_example.htm
+1) declare an application event.
+2) component register the event.==>notifier component.
+3) component handle the event.==> handler component.
+
+application event
+
+                    declare application event
+                                                <!--c:aeEvent-->
+                                                <aura:event type="APPLICATION">
+                                                    <aura:attribute name="message" type="String"/>
+                                                </aura:event>
+
+                    notifier component
+
+                                                <!--c:aeNotifier-->
+                                                <aura:component>
+                                                    <aura:registerEvent name="appEvent" type="c:aeEvent"/>
+
+                                                    <h1>Simple Application Event Sample</h1>
+                                                    <p><lightning:button
+                                                        label="Click here to fire an application event"
+                                                        onclick="{!c.fireApplicationEvent}" />
+                                                    </p>
+                                                </aura:component>
+
+
+                                                            controller
+
+                                                                    fireApplicationEvent : function(cmp, event) {
+                                                                        // Get the application event by using the
+                                                                        // e.<namespace>.<event> syntax
+                                                                        var appEvent = $A.get("e.c:aeEvent");
+                                                                        appEvent.setParams({
+                                                                            "message" : "An application event fired me. " +
+                                                                            "It all happened so fast. Now, I'm everywhere!" });
+                                                                        appEvent.fire();
+                                                                    }
+
+                    handler component
+
+                                                <!--c:aeHandler-->
+                                                <aura:component>
+                                                    <aura:attribute name="messageFromEvent" type="String"/>
+                                                    <aura:attribute name="numEvents" type="Integer" default="0"/>
+
+                                                    <aura:handler event="c:aeEvent" action="{!c.handleApplicationEvent}"/>
+
+                                                    <p>{!v.messageFromEvent}</p>
+                                                    <p>Number of events: {!v.numEvents}</p>
+                                                </aura:component>
+
+
+                                                            controller
+
+                                                                    handleApplicationEvent : function(cmp, event) {
+                                                                        var message = event.getParam("message");
+
+                                                                        // set the handler attributes based on event data
+                                                                        cmp.set("v.messageFromEvent", message);
+                                                                        var numEventsHandled = parseInt(cmp.get("v.numEvents")) + 1;
+                                                                        cmp.set("v.numEvents", numEventsHandled);
+                                                                    }
+
+calling apex controller method
+    https://wedgecommerce.com/calling-apex-controller-method-lightning-component/
+
+                    component==>drop down list/picklist,table,
+
+                                <aura:component controller="entityTypeController" >
+                                <!--attribute-->
+                                    <aura:attribute name='componentString' type='String' default="Account"  description='Selected entity type'/ >
+                                    <aura:attribute name='sObjList' type='sObject[]'  description = 'Returned list from server side controller'/ >
+
+                                <!--declare event-->
+                                    <aura:handler name='init' value='{!this}' action='{!c.changeEntity}' description = 'Trigger defined action on initialization of component'/ >
+
+
+                                        <!-- drop down/picklist -- >
+                                        <lightning:select label='Entity Type' name='cmpString' value='{!v.componentString}' onchange='{!c.changeEntity}' >
+                                            <option value='Account' >Account </option >
+                                            <option value='Contact' >Contact </option >
+                                            <option value='Lead' >Lead </option >
+                                        </lightning:select >
+
+                                        <!-- fill table with server data -- >
+                                        <table class="slds-table slds-table_bordered slds-table_cell-buffer" >
+                                            <tr >
+                                                <th >Id </th >
+                                                <th >Name </th >
+                                            </tr >
+                                            <aura:iteration items='{!v.sObjList}' var="sObj" >
+                                                <tr >
+                                                    <td >{!sObj.Id} </td >
+                                                    <td >{!sObj.Name} </td >
+                                                </tr >     
+                                            </aura:iteration >
+                                        </table >
+
+                                </aura:component >
+
+                                    controller ==> call apex method
+
+                                                            changeEntity : function(component, event, helper) {
+                                                                var action = component.get('c.getEntity'); 
+                                                                // method name i.e. getEntity should be same as defined in apex class
+                                                                // params name i.e. entityType should be same as defined in getEntity method
+                                                                action.setParams({
+                                                                    "entityType" : component.get('v.componentString') 
+                                                                });
+                                                                action.setCallback(this, function(a){
+                                                                    var state = a.getState(); // get the response state
+                                                                    if(state == 'SUCCESS') {
+                                                                        component.set('v.sObjList', a.getReturnValue());
+                                                                    }
+                                                                });
+                                                                $A.enqueueAction(action);
+                                                            }
+
+                    soql server controller
+
+                        public class entityTypeController {   
+                        
+                            @AuraEnabled
+                            public static List getEntity(String entityType){
+                                List sobj = new List();
+                                if(entityType != null) {
+                                    String query = 'SELECT Name, Id FROM '+entityType ;
+                                    sobj = database.query(query);
+                                }
+                                return sobj;
+                            }
+
+                        }
+
+
+toast notification in component controller
+
+                        controller
+                                        handleSave : function(component, event, helper) {
+                                                
+                                                
+                                                var formData = component.get("v.contactObj");
+                                                
+                                                var action=component.get("c.saveContact");        
+                                                action.setParams({con:formData});
+                                                console.log('Save');
+                                                
+                                                
+                                                action.setCallback(this,function(response){
+                                                    var state=response.getState();
+                                                    console.log('Contact Save'+state);
+                                                    if (state === "SUCCESS") {
+                                                        helper.showToast(component, event, helper,'Contact created successfully!');
+                                                    }
+                                                    else if (state === "ERROR") {                
+                                                        var errorMessage="Unknown error";
+                                                        
+                                                        var errors = response.getError();
+                                                        if (errors) {
+                                                            if (errors[0] && errors[0].message) {
+                                                                errorMessage=errors[0].message
+                                                            }
+                                                        } 
+                                                        
+                                                        helper.showToast(component, event, helper,errorMessage);
+                                                    }
+                                                    
+                                                    var returnConObj=response.getReturnValue();
+                                                    console.log('return Con Obj'+JSON.stringify(returnConObj));;
+                                                    
+                                                });
+                                                
+                                                $A.enqueueAction(action);
+                                                
+                                            }
+
+
+                                                contoller-helper
+
+                                                                        showToast : function(component, event, helper,message) {
+                                                                        var toastEvent = $A.get("e.force:showToast");
+                                                                        toastEvent.setParams({
+                                                                            "type": "Success",
+                                                                            "title": "Success!",
+                                                                            "message": message
+                                                                        });
+                                                                        toastEvent.fire();
+                                                                    }
