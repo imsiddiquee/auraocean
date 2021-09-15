@@ -37,6 +37,13 @@
       console.log("return Con Obj" + JSON.stringify(returnConObj));
     });
     $A.enqueueAction(action);
+
+    //Component event register with value
+    //Get the event using registerEvent name.
+    var cmpEvent = component.getEvent("componentNotifyEvent");
+    //Set event attribute value
+    cmpEvent.setParams({ message: "AccountSaved" });
+    cmpEvent.fire();
   },
   handleCancel: function (component, event, helper) {
     component.set("v.accountObj", "{}");
