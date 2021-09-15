@@ -1,0 +1,11 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global">
+  <!--handle component event-->
+  <aura:handler
+    name="componentNotifyEvent"
+    event="c:ComponentNotifyEvent"
+    action="{!c.handleComponentEvent}"
+  />
+
+  <c:AccountForm aura:id="cmpAccountForm" />
+  <c:AccountGrid aura:id="cmpAccountGrid" />
+</aura:component>

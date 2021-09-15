@@ -6,7 +6,7 @@ trailhead orgs
     https://trailhead.salesforce.com/users/profiles/orgs
 
 component available for all pages support by lightning
-    implements="flexipage:availableForAllPageTypes" access="global"    
+    implements="flexipage:availableForAllPageTypes" access="global"
 page available for only tabs
     implements="force:appHostable
 quick action
