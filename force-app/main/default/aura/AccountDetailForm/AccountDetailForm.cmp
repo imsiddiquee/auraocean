@@ -1,0 +1,18 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global">
+  <!-- attribute -->
+  <aura:attribute type="Account" name="message" access="public" default="{}" />
+  <aura:attribute type="String" name="recordError" access="private" />
+
+  <!-- handle application event -->
+  <aura:handler
+    event="c.ApplicationNotifyEvent"
+    action="{!c.handleApplicationEvent}"
+  />
+
+  <lightning:card title="Account Detail Information">
+    <div>
+      <p>Account Name: {!v.message.Name}</p>
+      <p>Account Number: {!v.message.AccountNumber}</p>
+    </div>
+  </lightning:card>
+</aura:component>
