@@ -1,24 +1,25 @@
 <aura:component
+  controller="ContactHandler"
   implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
   access="global"
 >
-  <aura:attribute name="examObj" type="contact" default="{}" />
+  <aura:attribute name="contactObj" type="Contact" default="{}" />
 
   <div class="slds-box slds-p-around_x-small" style="background-color: white">
     <lightning:input
-      name="firstName"
+      name="FirstName"
       label="First Name"
-      value="{!v.examObj.FirstName}"
+      value="{!v.contactObj.FirstName}"
     />
     <lightning:input
       name="LastName"
       label="Last Name"
-      value="{!v.examObj.LastName}"
+      value="{!v.contactObj.LastName}"
     />
     <lightning:button
       class="slds-m-top_x-small"
       variant="brand"
-      label="Click"
+      label="Save"
       title="Brand action"
       onclick="{! c.handleClick }"
     />
