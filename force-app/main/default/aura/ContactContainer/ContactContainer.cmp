@@ -14,7 +14,7 @@
   implements="flexipage:availableForAllPageTypes"
   access="global"
 >
-  <!--register component event-->
+  <!--handle component event-->
   <aura:handler
     name="componentNotifyEvent"
     event="c:ComponentNotifyEvent"
