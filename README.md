@@ -4,7 +4,7 @@ AURA environment has Component-event, Application-event, Aura-method this app he
 
 ## Simple Account Information App
 
-https://github.com/imsiddiquee/auraocean/blob/main/postContent/App%20overview.png
+![##](https://github.com/imsiddiquee/auraocean/blob/main/postContent/App%20overview.png)
 
 ### Application internal structure
 
