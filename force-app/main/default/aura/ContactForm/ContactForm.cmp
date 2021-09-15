@@ -1,12 +1,12 @@
 <aura:component
   controller="ContactHandler"
   implements="flexipage:availableForAllPageTypes"
-  access="global"
->
-  <!--attribute-->
+  access="global">
+    
+   <!--attribute-->
   <aura:attribute name="contactObj" type="Contact" default="{}" />
-
-  <!--register event-->
+    
+   <!--register event-->
   <aura:registerEvent
     name="componentNotifyEvent"
     type="c:ComponentNotifyEvent"
