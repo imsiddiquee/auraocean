@@ -1,0 +1,32 @@
+<aura:component
+  controller="AccountHandler"
+  implements="flexipage:availableForAllPageTypes"
+  access="global"
+>
+  <!-- attributes -->
+  <aura:attribute name="data" type="Object" default="{}" />
+  <aura:attribute name="message" type="String" default="" />
+  <aura:attribute name="columns" type="List" />
+
+  <!-- handlers-->
+  <aura:handler name="init" value="{! this }" action="{! c.showData }" />
+
+  <!-- declare aura event-->
+  <aura:method name="auraRefreshGrid" action="{!c.refreshGrid}" access="public">
+    <aura:attribute name="auraMessage" type="String" default="Hello" />
+  </aura:method>
+
+  <lightning:card title="All Accounts">
+    <lightning:layout>
+      <lightning:layoutItem padding="around-small" size="12">
+        <lightning:datatable
+          keyField="id"
+          data="{! v.data }"
+          columns="{! v.columns }"
+          hideCheckboxColumn="true"
+          onrowaction="{!c.handleRowAction}"
+        />
+      </lightning:layoutItem>
+    </lightning:layout>
+  </lightning:card>
+</aura:component>
