@@ -462,3 +462,53 @@ toast notification in component controller
                                                                         });
                                                                         toastEvent.fire();
                                                                     }
+
+
+
+//
+aura if with attribute property
+
+    <aura:if isTrue="{!!empty(v.label)}">
+        <label class="slds-form-element__label">{!v.label}</label>
+    </aura:if>
+
+apply default css on aura component by 
+
+    <aura:application extends="force:slds">
+    <c:ContactRecCreation />
+    </aura:application>
+
+
+declare init method
+        <aura:handler name="init" value="{!this}" action="{!c.showContacts}"/>
+
+iteration in component ui
+    <aura:iteration items="{!v.contactList}" var="contObj" indexVar="index">
+            <tr>
+                <td data-label="First Name" scope="row">
+                <div class="slds-truncate" title="FirstName">{!contObj.FirstName}</div>
+                </td>
+                <td data-label="Last Name">
+                <div class="slds-truncate" title="LastName">{!contObj.LastName}</div>
+                </td>
+            </tr>
+    </aura:iteration>
+
+
+in controller get value from ui attribute/variable
+    var contactList = component.get("v.contactList");//v.contactList==>ui variable.
+in controller set ui attribute value
+    var temp='test'
+    component.set("v.testData",temp);
+
+in controller get value from ui by aura-id
+    <lightning:input aura:id="fNumber" label="First Name" placeholder="Enter first name" />
+
+    var firstNumber=component.find("fNumber").get("v.value");
+
+data conversion sting to int in controller
+    var firstNumber=parseInt(component.find("fNumber").get("v.value"));
+
+controller set method parameter values
+    var action=component.get("c.getAdditionalResult");
+    action.setParams({ 'fNumber': component.get("v.fNumber",'sNumber':component.get("v.sNumber")) });
