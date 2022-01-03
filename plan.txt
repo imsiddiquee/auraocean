@@ -466,6 +466,19 @@ toast notification in component controller
 
 
 //
+
+attribute with default value==>git==>ComboBoxComponent
+
+  <aura:attribute
+    name="options"
+    type="List"
+    default="[
+    {'label': 'New', 'value': 'new'},
+    {'label': 'In Progress', 'value': 'inProgress'},
+    {'label': 'Finished', 'value': 'finished'},
+    ]"
+  />
+
 aura if with attribute property
 
     <aura:if isTrue="{!!empty(v.label)}">
@@ -512,3 +525,118 @@ data conversion sting to int in controller
 controller set method parameter values
     var action=component.get("c.getAdditionalResult");
     action.setParams({ 'fNumber': component.get("v.fNumber",'sNumber':component.get("v.sNumber")) });
+
+datatable==>git==>LightningDataTableExample
+
+design component==> used the matadata defined component name from ui==>git ==>DesignComponentExample
+lds==>lightning design system==> how to use salesforce ui on custom component==>git==>DesignComponentExample
+
+
+application event
+    application-event==>parent==>child
+
+    create application-event==>git==>CalculatorApplicationEvent 
+    create parent==>git==>CalculatorComponent
+                        <aura:registerEvent name="appsEvent" type="c:CalculatorApplicationEvent" />
+
+                        var sum = parseInt(component.get("v.firstNumber")) + parseInt(component.get("v.secondNumber"));
+                        var eventObj = $A.get("e.c:CalculatorApplicationEvent");
+                        eventObj.setParams({ "sumResult": sum });
+        
+                        eventObj.fire();
+
+    create child==>git==>CalculatorResultComponent
+                        <aura:handler event="c:CalculatorApplicationEvent" action="{!c.getResult}" />
+                        <aura:attribute name="result" type="integer" />
+
+                        getResult: function (component, event, helper) {
+                        component.set("v.result", event.getParam("sumResult"));
+                        }
+
+component event
+    create component-event==>git==>SelectValComponentEvent
+    child==>git==>ComboBoxComponent
+                <aura:registerEvent name="msgEvent" type="c:SelectValComponentEvent" />
+
+                handleChange : function(component, event, helper) {
+                var compEvent = component.getEvent("msgEvent");        
+                compEvent.setParams({ "selectedVal": component.get("v.selOption") });        
+                compEvent.fire();
+	        }
+    
+    parent==>git==>ComboBoxComponentHandler
+                <aura:attribute name="SelectedOptionValue" type="String" />
+                <c:ComboBoxComponent msgEvent="{!c.showSelectedValue}" />
+
+                showSelectedValue : function(component, event, helper) {
+		            component.set("v.SelectedOptionValue",event.getParam("selectedVal"))
+	            }
+
+
+get current recordId on component==>git==>LightningPageExmple
+        force:hasRecordId==> help to get recordId==><div>Record Id:{!v.recordId}</div>
+
+                <aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global" >    
+                    <lightning:card title="Lighting page Example">
+                        <div>Record Id:{!v.recordId}</div>
+                        Welcome to Lightning Page
+                    </lightning:card>
+                </aura:component>
+
+
+
+                    
+lightning lsds design system
+    block-element-modifier
+        block==>.house
+        element==>.house__window
+        modifier==>.house__window-big
+
+
+apex get current login user
+    https://sfdctechsolutions.blogspot.com/2021/07/get-current-user-information-in-apex.html
+    UserInfo.getUserId()     
+
+apex get current user profile
+    Id profileId=userinfo.getProfileId();
+    String profileName=[Select Id,Name from Profile where Id=:profileId].Name;
+    system.debug('ProfileName'+profileName);
+
+aura if condition
+
+            <aura:if isTrue="{! v.saleODType == 'Ex-Farm/FOT'}">
+
+                <h1 style="font-size:18px; margin: 10px;">The Create Contracts Site Object is NOT required.</h1>
+
+            </aura:if>
+
+get current user on apex
+      public static Id userId {get{
+        Id userId = UserInfo.getUserId();
+        User u = [select id, contactId from User where id = : userId];
+        Id getContactId = u.contactId;
+        return getContactId;
+    }set;}
+
+
+apex from schema get field name and put in soql
+    String queryInvoice = 'SELECT ';
+    for(Schema.FieldSetMember f : SObjectType.Invoice__c.FieldSets.InvoiceFieldSet.getFields())
+    {
+           queryInvoice += f.getFieldPath() + ', ';
+    }
+    queryInvoice += 'Id FROM Invoice__c WHERE Id IN :invoiceIdList';        
+    Map<Id,Invoice__c> creditNoteMap = new Map<Id,Invoice__c>((List<Invoice__c>)Database.Query(queryInvoice));
+         
+apex get object record type api name
+    RecordType.DeveloperName = \'Credit_Note\'';
+apex by name get recordtype/ record type id
+    Id cNRecordType = Schema.SObjectType.Invoice__c.getRecordTypeInfosByName().get('Credit Note').getRecordTypeId();
+
+apex clone an object
+    Invoice__c tempCreditNote;
+    tempCreditNote = inv.clone(false,true,false,false);
+
+aura component value check is null 
+    var someAttribute = component.get('v.someAttribute');
+    if ($A.util.isUndefinedOrNull(someAttribute)) {

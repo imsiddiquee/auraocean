@@ -1,0 +1,58 @@
+//visualforce page
+<apex:page >
+    <html>
+        <body>
+            <apex:slds />
+            <apex:form id="form" styleClass="slds-scope">
+                
+                
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div>
+                        <input type="checkbox" id="consentForYourSelf" name="consentForYourSelf" />
+                        <label for="consentForYourSelf"> Consent for yourself</label>     
+                        
+                    </div>  
+                    
+                    <div>
+                        <label for="firstName" class="slds-label"> First Name</label>                          
+                        <input type="text"  class="slds-input" id="firstName" name="firstName" placeholder="First Name"/>
+                    </div>
+                    
+                    <div>
+                         <label for="birthday" class="slds-label">Birthday:</label>
+                        <input type="date" class="slds-input"  id="birthday" name="birthday"/>
+                    </div>
+                    
+                    <apex:commandLink value="Save"  styleClass="slds-button slds-button_brand" onclick="return doSomeWork();"   ></apex:commandLink>                  
+                    
+                </div>
+                
+                <script>
+                
+                function doSomeWork(event)
+                {
+                    
+                    var firstName=document.querySelector("[name='firstName']").value;
+                    var consentForYourSelf=document.querySelector("[name='consentForYourSelf']").checked;
+                    var birthday=document.querySelector("[name='birthday']").value;
+                    console.log(birthday);
+                    
+                    return false;
+                }
+                
+                </script>
+                
+                
+                
+            </apex:form>
+        </body>
+    </html>
+</apex:page>
+
+on iframe how to add another page component==>AdInvoicePage
+    <div>
+        <aura:if isTrue="{!v.flag}">
+            <iframe style="width:100%;height:100% align:center" src="{!'/apex/AdInvoicePage?id='+v.recordId+'&amp;view=pdf'}" scrolling="false"  frameborder="true" height="650px"/>
+            <br/>
+        </aura:if>
+    </div>
