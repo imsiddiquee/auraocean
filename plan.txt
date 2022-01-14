@@ -530,6 +530,9 @@ datatable==>git==>LightningDataTableExample
 
 design component==> used the matadata defined component name from ui==>git ==>DesignComponentExample
 lds==>lightning design system==> how to use salesforce ui on custom component==>git==>DesignComponentExample
+        <aura:application extends="force:slds">
+            <c:DualListBoxExample/>
+        </aura:application>
 
 
 application event
@@ -640,3 +643,61 @@ apex clone an object
 aura component value check is null 
     var someAttribute = component.get('v.someAttribute');
     if ($A.util.isUndefinedOrNull(someAttribute)) {
+
+//
+aura get recordId
+    <aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" controller="ContactListController" access="global" >
+    </aura:component>
+
+    var recordId= component.get("v.recordId")
+
+call apex controller gethod
+
+    aura controller
+        https://www.sfdcstop.com/2018/01/salesforce-lightning-tutorial-part-1.html
+        var action = component.get("c.getContactList");
+        var accountId = component.get("v.recordId");
+            
+            action.setParams({
+                accountIds: accountId
+            });
+            
+        action.setCallback(this, function(response) {
+
+            var state = response.getState();
+            
+            if(state === 'SUCCESS') {
+        
+                var contactList = response.getReturnValue();    
+                component.set("v.contactList",contactList);
+            }
+            else {        
+                alert('Error in getting data');
+            }
+        });
+        
+        $A.enqueueAction(action);
+        
+    apex controller
+        @AuraEnabled
+        public static List<Contact> getContactList(List<Id> accountIds) {
+            // Getting the list of contacts from where Id is in accountIds
+            List<Contact> contactList = [SELECT Id, Name, Email, Phone, AccountId FROM Contact WHERE AccountId in :accountIds];
+            // Returning the contact list
+            return contactList;
+        }
+
+used global event create new contact
+    newContact: function(component, event, helper) {
+        // Global event force:createRecord is used
+        var createContact = $A.get("e.force:createRecord");
+        // Parameters like apiName and defaultValues are set
+        createContact.setParams({
+            "entityApiName": "Contact",
+            "defaultFieldValues": {
+                "AccountId": component.get("v.recordId")
+            }
+        });
+        // Event fired and new contact dialog open
+        createContact.fire();
+    }
