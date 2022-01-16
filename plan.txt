@@ -161,6 +161,8 @@ hyperlink button ==> redirect to another page==>show hide button==> var navEvt=$
                                 }
                             }
 
+event inter communication pattern
+    https://developer.salesforce.com/blogs/developer-relations/2017/04/lightning-inter-component-communication-patterns
 
 
 component event==>child to parent,handle by component itself or the parent component. child==>register the event, parent==> implement the event.
