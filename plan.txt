@@ -462,3 +462,242 @@ toast notification in component controller
                                                                         });
                                                                         toastEvent.fire();
                                                                     }
+
+
+
+//
+
+attribute with default value==>git==>ComboBoxComponent
+
+  <aura:attribute
+    name="options"
+    type="List"
+    default="[
+    {'label': 'New', 'value': 'new'},
+    {'label': 'In Progress', 'value': 'inProgress'},
+    {'label': 'Finished', 'value': 'finished'},
+    ]"
+  />
+
+aura if with attribute property
+
+    <aura:if isTrue="{!!empty(v.label)}">
+        <label class="slds-form-element__label">{!v.label}</label>
+    </aura:if>
+
+apply default css on aura component by 
+
+    <aura:application extends="force:slds">
+    <c:ContactRecCreation />
+    </aura:application>
+
+
+declare init method
+        <aura:handler name="init" value="{!this}" action="{!c.showContacts}"/>
+
+iteration in component ui
+    <aura:iteration items="{!v.contactList}" var="contObj" indexVar="index">
+            <tr>
+                <td data-label="First Name" scope="row">
+                <div class="slds-truncate" title="FirstName">{!contObj.FirstName}</div>
+                </td>
+                <td data-label="Last Name">
+                <div class="slds-truncate" title="LastName">{!contObj.LastName}</div>
+                </td>
+            </tr>
+    </aura:iteration>
+
+
+in controller get value from ui attribute/variable
+    var contactList = component.get("v.contactList");//v.contactList==>ui variable.
+in controller set ui attribute value
+    var temp='test'
+    component.set("v.testData",temp);
+
+in controller get value from ui by aura-id
+    <lightning:input aura:id="fNumber" label="First Name" placeholder="Enter first name" />
+
+    var firstNumber=component.find("fNumber").get("v.value");
+
+data conversion sting to int in controller
+    var firstNumber=parseInt(component.find("fNumber").get("v.value"));
+
+controller set method parameter values
+    var action=component.get("c.getAdditionalResult");
+    action.setParams({ 'fNumber': component.get("v.fNumber",'sNumber':component.get("v.sNumber")) });
+
+datatable==>git==>LightningDataTableExample
+
+design component==> used the matadata defined component name from ui==>git ==>DesignComponentExample
+lds==>lightning design system==> how to use salesforce ui on custom component==>git==>DesignComponentExample
+        <aura:application extends="force:slds">
+            <c:DualListBoxExample/>
+        </aura:application>
+
+
+application event
+    application-event==>parent==>child
+
+    create application-event==>git==>CalculatorApplicationEvent 
+    create parent==>git==>CalculatorComponent
+                        <aura:registerEvent name="appsEvent" type="c:CalculatorApplicationEvent" />
+
+                        var sum = parseInt(component.get("v.firstNumber")) + parseInt(component.get("v.secondNumber"));
+                        var eventObj = $A.get("e.c:CalculatorApplicationEvent");
+                        eventObj.setParams({ "sumResult": sum });
+        
+                        eventObj.fire();
+
+    create child==>git==>CalculatorResultComponent
+                        <aura:handler event="c:CalculatorApplicationEvent" action="{!c.getResult}" />
+                        <aura:attribute name="result" type="integer" />
+
+                        getResult: function (component, event, helper) {
+                        component.set("v.result", event.getParam("sumResult"));
+                        }
+
+component event
+    create component-event==>git==>SelectValComponentEvent
+    child==>git==>ComboBoxComponent
+                <aura:registerEvent name="msgEvent" type="c:SelectValComponentEvent" />
+
+                handleChange : function(component, event, helper) {
+                var compEvent = component.getEvent("msgEvent");        
+                compEvent.setParams({ "selectedVal": component.get("v.selOption") });        
+                compEvent.fire();
+	        }
+    
+    parent==>git==>ComboBoxComponentHandler
+                <aura:attribute name="SelectedOptionValue" type="String" />
+                <c:ComboBoxComponent msgEvent="{!c.showSelectedValue}" />
+
+                showSelectedValue : function(component, event, helper) {
+		            component.set("v.SelectedOptionValue",event.getParam("selectedVal"))
+	            }
+
+
+get current recordId on component==>git==>LightningPageExmple
+        force:hasRecordId==> help to get recordId==><div>Record Id:{!v.recordId}</div>
+
+                <aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global" >    
+                    <lightning:card title="Lighting page Example">
+                        <div>Record Id:{!v.recordId}</div>
+                        Welcome to Lightning Page
+                    </lightning:card>
+                </aura:component>
+
+
+
+                    
+lightning lsds design system
+    block-element-modifier
+        block==>.house
+        element==>.house__window
+        modifier==>.house__window-big
+
+
+apex get current login user
+    https://sfdctechsolutions.blogspot.com/2021/07/get-current-user-information-in-apex.html
+    UserInfo.getUserId()     
+
+apex get current user profile
+    Id profileId=userinfo.getProfileId();
+    String profileName=[Select Id,Name from Profile where Id=:profileId].Name;
+    system.debug('ProfileName'+profileName);
+
+aura if condition
+
+            <aura:if isTrue="{! v.saleODType == 'Ex-Farm/FOT'}">
+
+                <h1 style="font-size:18px; margin: 10px;">The Create Contracts Site Object is NOT required.</h1>
+
+            </aura:if>
+
+get current user on apex
+      public static Id userId {get{
+        Id userId = UserInfo.getUserId();
+        User u = [select id, contactId from User where id = : userId];
+        Id getContactId = u.contactId;
+        return getContactId;
+    }set;}
+
+
+apex from schema get field name and put in soql
+    String queryInvoice = 'SELECT ';
+    for(Schema.FieldSetMember f : SObjectType.Invoice__c.FieldSets.InvoiceFieldSet.getFields())
+    {
+           queryInvoice += f.getFieldPath() + ', ';
+    }
+    queryInvoice += 'Id FROM Invoice__c WHERE Id IN :invoiceIdList';        
+    Map<Id,Invoice__c> creditNoteMap = new Map<Id,Invoice__c>((List<Invoice__c>)Database.Query(queryInvoice));
+         
+apex get object record type api name
+    RecordType.DeveloperName = \'Credit_Note\'';
+apex by name get recordtype/ record type id
+    Id cNRecordType = Schema.SObjectType.Invoice__c.getRecordTypeInfosByName().get('Credit Note').getRecordTypeId();
+
+apex clone an object
+    Invoice__c tempCreditNote;
+    tempCreditNote = inv.clone(false,true,false,false);
+
+aura component value check is null 
+    var someAttribute = component.get('v.someAttribute');
+    if ($A.util.isUndefinedOrNull(someAttribute)) {
+
+//
+aura get recordId
+    <aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" controller="ContactListController" access="global" >
+    </aura:component>
+
+    var recordId= component.get("v.recordId")
+
+call apex controller gethod
+
+    aura controller
+        https://www.sfdcstop.com/2018/01/salesforce-lightning-tutorial-part-1.html
+        var action = component.get("c.getContactList");
+        var accountId = component.get("v.recordId");
+            
+            action.setParams({
+                accountIds: accountId
+            });
+            
+        action.setCallback(this, function(response) {
+
+            var state = response.getState();
+            
+            if(state === 'SUCCESS') {
+        
+                var contactList = response.getReturnValue();    
+                component.set("v.contactList",contactList);
+            }
+            else {        
+                alert('Error in getting data');
+            }
+        });
+        
+        $A.enqueueAction(action);
+        
+    apex controller
+        @AuraEnabled
+        public static List<Contact> getContactList(List<Id> accountIds) {
+            // Getting the list of contacts from where Id is in accountIds
+            List<Contact> contactList = [SELECT Id, Name, Email, Phone, AccountId FROM Contact WHERE AccountId in :accountIds];
+            // Returning the contact list
+            return contactList;
+        }
+
+used global event create new contact
+    newContact: function(component, event, helper) {
+        // Global event force:createRecord is used
+        var createContact = $A.get("e.force:createRecord");
+        // Parameters like apiName and defaultValues are set
+        createContact.setParams({
+            "entityApiName": "Contact",
+            "defaultFieldValues": {
+                "AccountId": component.get("v.recordId")
+            }
+        });
+        // Event fired and new contact dialog open
+        createContact.fire();
+    }

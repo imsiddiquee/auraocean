@@ -1,0 +1,31 @@
+<aura:component controller="Calculatorctrl">
+  <aura:attribute name="fNumber" type="decimal" />
+  <aura:attribute name="sNumber" type="decimal" />
+  <aura:attribute name="result" type="decimal" />
+  <br />
+  <div>
+    <b>Calculator with attribute Example:</b>
+  </div>
+
+  <div>
+    <div>
+      <ui:inputNumber label="First Number" aura:id="fNum" value="{!v.fNumber}" />
+    </div>
+    <br />
+
+    <div>
+      <ui:inputNumber label="Second Number" aura:id="sNum" value="{!v.sNumber}" />
+    </div>
+    <br />
+
+    <div>
+      <ui:inputNumber label="Result" aura:id="Result" value="{!v.result}" />
+    </div>
+    <br />
+
+    <div>
+      <ui:button label="Click Me" press="{!c.calculate}" class="button" />
+    </div>
+    <br />
+  </div>
+</aura:component>

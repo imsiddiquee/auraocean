@@ -1,0 +1,46 @@
+<aura:component controller="CreateContactCls">
+  <aura:attribute
+    name="contactObject"
+    type="Contact"
+    default="{'sObjectType':'Contact','FirstName':'','LastName':'','Phone':''}"
+  />
+
+  <aura:attribute name="contactId" type="String" />
+  <aura:attribute name="contactList" type="Contact[]" />
+
+  <aura:handler name="init" value="{!this}" action="{!c.showContacts}" />
+
+  <lightning:input value="{!v.contactObject.FirstName}" label="First Name" placeholder="Enter first name" />
+  <lightning:input value="{!v.contactObject.LastName}" label="Last Name" placeholder="Enter last name" />
+  <lightning:input value="{!v.contactObject.Phone}" label="Phone" placeholder="Enter phone" />
+
+  <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.doSave}" />
+
+  <div>
+    <br />
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+      <thead>
+        <tr>
+          <th class="slds-text-title_caps" scope="col">
+            <div class="slds-truncate" title="First Name">First Name</div>
+          </th>
+          <th class="slds-text-title_caps" scope="col">
+            <div class="slds-truncate" title="Last Name">Last Name</div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <aura:iteration items="{!v.contactList}" var="contObj" indexVar="index">
+          <tr>
+            <td data-label="First Name" scope="row">
+              <div class="slds-truncate" title="FirstName">{!contObj.FirstName}</div>
+            </td>
+            <td data-label="Last Name">
+              <div class="slds-truncate" title="LastName">{!contObj.LastName}</div>
+            </td>
+          </tr>
+        </aura:iteration>
+      </tbody>
+    </table>
+  </div>
+</aura:component>
