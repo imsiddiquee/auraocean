@@ -6,6 +6,9 @@ tigerhunter5
 trailhead orgs
     https://trailhead.salesforce.com/users/profiles/orgs
 
+aura sfdcacademy
+    https://gist.github.com/choudharymanish8585
+
 component available for all pages support by lightning
     implements="flexipage:availableForAllPageTypes" access="global"
 page available for only tabs
