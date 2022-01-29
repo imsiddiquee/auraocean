@@ -1,7 +1,4 @@
 public with sharing class Calculatorctrl {
-  public Calculatorctrl() {
-  }
-
   @AuraEnabled
   public static decimal calculateValue(Decimal firstName, Decimal secondName) {
     try {

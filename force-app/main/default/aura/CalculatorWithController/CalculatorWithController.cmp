@@ -1,4 +1,4 @@
-<aura:component controller="Calculatorctrl">
+<aura:component controller="Calculatorctrl" extends="c:auraBase">
   <aura:attribute name="fNumber" type="decimal" />
   <aura:attribute name="sNumber" type="decimal" />
   <aura:attribute name="result" type="decimal" />
