@@ -1,7 +1,8 @@
 ({
   calculate: function (component, event, helper) {
+    helper.showAlert();
     //process-1 call server methom
-    helper.getCarType(component, helper);
+    // helper.getCarType(component, helper);
 
     //process-2 call server methom
     /**    

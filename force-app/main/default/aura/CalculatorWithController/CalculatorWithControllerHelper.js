@@ -20,5 +20,9 @@
       },
       { firstName: fNumber, secondName: sNumber }
     );
+  },
+
+  showAlert: function (component, helper) {
+    alert("hello world!");
   }
 });
