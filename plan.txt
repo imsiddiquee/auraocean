@@ -707,3 +707,18 @@ used global event create new contact
         // Event fired and new contact dialog open
         createContact.fire();
     }
+    
+   in js read value from button attribute
+	   //set value in aura html 
+	   	<lightning:button class="text-medium text-l button-back-color" label="{!$Label.c.Assistive_Technology_User_Guide}" name="user-guide" title="				{!$Label.c.Assistive_Technology_User_Guide}" onclick="{!c.generalNavigation}"/>
+
+	   //read value in js
+	   	event.getSource().get('v.name');
+   
+   
+   	   //set value in div
+ 		<div aura:id="btnMaintenance" class="flex-card hub-card elementCursor"  data-label="{!$Label.c.Maintenance}" data-name="maintenance"                               data-title="{!$Label.c.Maintenance}" onclick="{!c.generalNavigation}"/> 
+
+	   //read value in js
+	   	event.currentTarget.dataset.name
+   
