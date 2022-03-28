@@ -707,3 +707,6 @@ used global event create new contact
         // Event fired and new contact dialog open
         createContact.fire();
     }
+
+    aura ui concatenate two variable in ui
+         <img  class="icon" src="{!join('/',$Resource.veralivingIcons,item.Name+'.png')}"/>
